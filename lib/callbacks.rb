@@ -60,7 +60,6 @@ class Callbacks
         unless reader.empty_element?
             extract_children(reader, attributes)
         end
-        #puts attributes.to_json
         @nodes.add(attributes)
     end
 
@@ -69,7 +68,6 @@ class Callbacks
         unless reader.empty_element?
             extract_children(reader, attributes)
         end
-        #puts attributes.to_json
         @ways.add(attributes)
     end
 
@@ -78,9 +76,6 @@ class Callbacks
         unless reader.empty_element?
             extract_children(reader, attributes)
         end
-        #puts attributes.to_json
-        #ways.add(attributes)
-
         @relations.add(attributes)
     end
     

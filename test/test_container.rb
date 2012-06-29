@@ -12,8 +12,6 @@ describe Container, "#limit check" do
     end
 end
 
-
-
 describe Container, "#database insert" do
     it "should flush content when limit reached" do
         con = Container.new(1, 'osm', 'node')

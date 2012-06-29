@@ -2,7 +2,6 @@ require 'uri'
 require 'net/http'
 require 'progressbar'
 require 'nokogiri'
-require 'json'
 
 require 'Callbacks'
 

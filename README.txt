@@ -1,14 +1,18 @@
 = osm2mongo
 
-* FIX (url)
+* https://github.com/posseidon/osm2mongo
 
 == DESCRIPTION:
 
-FIX (describe your package)
+Import Openstreetmap .osm(xml) data format into MongoDB written in Ruby.
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* TODO: Missing Observer implementation for Preprocessor (Using Callbacks class temporarily).
+* TODO: Missing Shift class and modules under Osm2Mongo main module.
+* TODO: Missing command line App.
+* TODO: Finish making gem installable.
+* TODO: Missing Rake task for installing dependencies and generate documentation.
 
 == SYNOPSIS:
 
@@ -16,7 +20,9 @@ FIX (describe your package)
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* mongo: ruby driver (http://rubygems.org/gems/mongo)
+* nokogiri: xml parser (http://rubygems.org/gems/nokogiri)
+* progressbar: just for fun and icandy :-) (http://rubygems.org/gems/progressbar)
 
 == INSTALL:
 
@@ -35,7 +41,7 @@ and generate the RDoc.
 
 (The MIT License)
 
-Copyright (c) 2012 FIX
+Copyright (c) 2012 
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
