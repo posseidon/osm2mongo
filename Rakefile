@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'hoe'
+require 'rubygems/dependency_installer.rb'
 
 # Hoe.plugin :compiler
 # Hoe.plugin :gem_prelude_sucks
@@ -21,3 +22,11 @@ Hoe.spec 'osm2mongo' do
 end
 
 # vim: syntax=ruby
+
+inst = Gem::DependencyInstaller.new
+    begin
+     inst.install "progressbar"
+     inst.install "nokogiri"
+    rescue
+     exit(1)
+    end
