@@ -59,11 +59,7 @@
           
           <li><a href="#method-i-bulk_insert">#bulk_insert</a></li>
           
-          <li><a href="#method-i-close">#close</a></li>
-          
           <li><a href="#method-i-connect">#connect</a></li>
-          
-          <li><a href="#method-i-count">#count</a></li>
           
           <li><a href="#method-i-insert">#insert</a></li>
           
@@ -122,6 +118,8 @@
         
           <li><a href="./Preprocessor.html">Preprocessor</a></li>
         
+          <li><a href="./TestDbhandler.html">TestDbhandler</a></li>
+        
           <li><a href="./TestOsm2mongo.html">TestOsm2mongo</a></li>
         
         </ul>
@@ -165,9 +163,28 @@
         <div id="collection-attribute-method" class="method-detail">
           <a name="collection"></a>
           
+          <a name="collection="></a>
+          
           <div class="method-heading attribute-method-heading">
             <span class="method-name">collection</span><span
-              class="attribute-access-type">[R]</span>
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="connection-attribute-method" class="method-detail">
+          <a name="connection"></a>
+          
+          <a name="connection="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">connection</span><span
+              class="attribute-access-type">[RW]</span>
           </div>
 
           <div class="method-description">
@@ -180,9 +197,11 @@
         <div id="database-attribute-method" class="method-detail">
           <a name="database"></a>
           
+          <a name="database="></a>
+          
           <div class="method-heading attribute-method-heading">
             <span class="method-name">database</span><span
-              class="attribute-access-type">[R]</span>
+              class="attribute-access-type">[RW]</span>
           </div>
 
           <div class="method-description">
@@ -246,39 +265,6 @@ value},{"another_key" =&gt; another_value}])</p>
         </div><!-- bulk_insert-method -->
 
       
-        <div id="close-method" class="method-detail ">
-          <a name="method-i-close"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">close</span><span
-              class="method-args">()</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            <p>Close Database Connection</p>
-            
-
-            
-            <div class="method-source-code" id="close-source">
-<pre>
-<span class="ruby-comment"># File lib/dbhandler.rb, line 64</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">close</span>
-    <span class="ruby-ivar">@conn</span>.<span class="ruby-identifier">close</span>()
-<span class="ruby-keyword">end</span></pre>
-            </div><!-- close-source -->
-            
-          </div>
-
-          
-
-          
-        </div><!-- close-method -->
-
-      
         <div id="connect-method" class="method-detail ">
           <a name="method-i-connect"></a>
 
@@ -311,8 +297,8 @@ value},{"another_key" =&gt; another_value}])</p>
 <pre>
 <span class="ruby-comment"># File lib/dbhandler.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">connect</span>(<span class="ruby-identifier">database</span>, <span class="ruby-identifier">collection</span>, <span class="ruby-identifier">host</span>, <span class="ruby-identifier">port</span>)
-    <span class="ruby-ivar">@conn</span> = <span class="ruby-constant">Mongo</span><span class="ruby-operator">::</span><span class="ruby-constant">Connection</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">host</span>, <span class="ruby-identifier">port</span>, <span class="ruby-value">:pool_size</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>)
-    <span class="ruby-ivar">@database</span> = <span class="ruby-ivar">@conn</span>[<span class="ruby-identifier">database</span>]
+    <span class="ruby-ivar">@connection</span> = <span class="ruby-constant">Mongo</span><span class="ruby-operator">::</span><span class="ruby-constant">Connection</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">host</span>, <span class="ruby-identifier">port</span>, <span class="ruby-value">:pool_size</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>)
+    <span class="ruby-ivar">@database</span> = <span class="ruby-ivar">@connection</span>[<span class="ruby-identifier">database</span>]
     <span class="ruby-ivar">@collection</span> = <span class="ruby-ivar">@database</span>[<span class="ruby-identifier">collection</span>]
 <span class="ruby-keyword">end</span></pre>
             </div><!-- connect-source -->
@@ -323,39 +309,6 @@ value},{"another_key" =&gt; another_value}])</p>
 
           
         </div><!-- connect-method -->
-
-      
-        <div id="count-method" class="method-detail ">
-          <a name="method-i-count"></a>
-
-          
-          <div class="method-heading">
-            <span class="method-name">count</span><span
-              class="method-args">()</span>
-            <span class="method-click-advice">click to toggle source</span>
-          </div>
-          
-
-          <div class="method-description">
-            
-            <p>Number of documents within Collection.</p>
-            
-
-            
-            <div class="method-source-code" id="count-source">
-<pre>
-<span class="ruby-comment"># File lib/dbhandler.rb, line 57</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">count</span>
-    <span class="ruby-ivar">@collection</span>.<span class="ruby-identifier">count</span>
-<span class="ruby-keyword">end</span></pre>
-            </div><!-- count-source -->
-            
-          </div>
-
-          
-
-          
-        </div><!-- count-method -->
 
       
         <div id="insert-method" class="method-detail ">

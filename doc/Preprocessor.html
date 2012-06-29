@@ -120,6 +120,8 @@
         
           <li><a href="./Preprocessor.html">Preprocessor</a></li>
         
+          <li><a href="./TestDbhandler.html">TestDbhandler</a></li>
+        
           <li><a href="./TestOsm2mongo.html">TestOsm2mongo</a></li>
         
         </ul>
@@ -229,7 +231,7 @@ href="http://0xcc.net/ruby-progressbar/index.html.en">0xcc.net/ruby-progressbar/
             
             <div class="method-source-code" id="as_size-source">
 <pre>
-<span class="ruby-comment"># File lib/preprocessor.rb, line 112</span>
+<span class="ruby-comment"># File lib/preprocessor.rb, line 115</span>
 <span class="ruby-keyword">def</span> <span class="ruby-constant">Preprocessor</span>.<span class="ruby-identifier">as_size</span> <span class="ruby-identifier">number</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">number</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1024</span>
     <span class="ruby-identifier">exponent</span> = <span class="ruby-value">0</span>
@@ -285,7 +287,10 @@ href="http://0xcc.net/ruby-progressbar/index.html.en">0xcc.net/ruby-progressbar/
 <pre>
 <span class="ruby-comment"># File lib/preprocessor.rb, line 67</span>
 <span class="ruby-keyword">def</span> <span class="ruby-constant">Preprocessor</span>.<span class="ruby-identifier">decompress</span>(<span class="ruby-identifier">source</span>)
-    <span class="ruby-constant">IO</span>.<span class="ruby-identifier">popen</span>(<span class="ruby-node">&quot;bunzip2 #{source}&quot;</span>)
+    <span class="ruby-identifier">command</span> = <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;bunzip2 #{source}&quot;</span>) <span class="ruby-comment"># long-long programm</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">command</span>.<span class="ruby-identifier">join</span>
     <span class="ruby-keyword">return</span> {<span class="ruby-string">'path'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-string">&quot;.bz2&quot;</span>,<span class="ruby-string">&quot;&quot;</span>)}
 <span class="ruby-keyword">end</span></pre>
             </div><!-- decompress-source -->
@@ -393,13 +398,13 @@ on architecture).</p>
 
 <h4>Examples</h4>
 
-<pre>result = Preprocessor::push2mongo(&quot;/tmp/hungary.osm&quot;, &quot;osm&quot;,  collections, 1000)</pre>
+<pre>result = Preprocessor::push2mongo(&quot;/tmp/map.osm&quot;, &quot;osm&quot;,  collections, 1000)</pre>
             
 
             
             <div class="method-source-code" id="push2mongo-source">
 <pre>
-<span class="ruby-comment"># File lib/preprocessor.rb, line 84</span>
+<span class="ruby-comment"># File lib/preprocessor.rb, line 87</span>
 <span class="ruby-keyword">def</span> <span class="ruby-constant">Preprocessor</span>.<span class="ruby-identifier">push2mongo</span>(<span class="ruby-identifier">osm_file</span>, <span class="ruby-identifier">db_name</span>, <span class="ruby-identifier">collection_names</span>, <span class="ruby-identifier">batch_limit</span>, <span class="ruby-identifier">host</span> = <span class="ruby-string">&quot;localhost&quot;</span>, <span class="ruby-identifier">port</span> = <span class="ruby-string">&quot;27017&quot;</span>)
     <span class="ruby-keyword">begin</span>
         <span class="ruby-identifier">result</span> = <span class="ruby-keyword">nil</span>

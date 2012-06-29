@@ -52,7 +52,7 @@ class Callbacks
         @nodes.flush()
         @ways.flush()
         @relations.flush()
-        return {NODE => @nodes.count, WAY => @ways.count, RELATION => @relations.count}
+        return {NODE => @nodes.collection.count, WAY => @ways.collection.count, RELATION => @relations.collection.count}
     end
 
     def node(reader)

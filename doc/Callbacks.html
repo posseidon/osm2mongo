@@ -132,6 +132,8 @@
         
           <li><a href="./Preprocessor.html">Preprocessor</a></li>
         
+          <li><a href="./TestDbhandler.html">TestDbhandler</a></li>
+        
           <li><a href="./TestOsm2mongo.html">TestOsm2mongo</a></li>
         
         </ul>
@@ -378,7 +380,7 @@
     <span class="ruby-ivar">@nodes</span>.<span class="ruby-identifier">flush</span>()
     <span class="ruby-ivar">@ways</span>.<span class="ruby-identifier">flush</span>()
     <span class="ruby-ivar">@relations</span>.<span class="ruby-identifier">flush</span>()
-    <span class="ruby-keyword">return</span> {<span class="ruby-constant">NODE</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@nodes</span>.<span class="ruby-identifier">count</span>, <span class="ruby-constant">WAY</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@ways</span>.<span class="ruby-identifier">count</span>, <span class="ruby-constant">RELATION</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@relations</span>.<span class="ruby-identifier">count</span>}
+    <span class="ruby-keyword">return</span> {<span class="ruby-constant">NODE</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@nodes</span>.<span class="ruby-identifier">collection</span>.<span class="ruby-identifier">count</span>, <span class="ruby-constant">WAY</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@ways</span>.<span class="ruby-identifier">collection</span>.<span class="ruby-identifier">count</span>, <span class="ruby-constant">RELATION</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@relations</span>.<span class="ruby-identifier">collection</span>.<span class="ruby-identifier">count</span>}
 <span class="ruby-keyword">end</span></pre>
             </div><!-- end-source -->
             

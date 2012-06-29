@@ -6,7 +6,7 @@ require 'mongo'
 # - mongo: Ruby Mongo Driver
 #
 module DBHandler
-    attr_reader :database, :collection
+    attr_accessor :connection, :database, :collection
 
     #
     # Connecting to database with given:
@@ -17,8 +17,8 @@ module DBHandler
     # * +port+ port number (default: 27017)
     #
     def connect(database, collection, host, port)
-        @conn = Mongo::Connection.new(host, port, :pool_size => 5)
-        @database = @conn[database]
+        @connection = Mongo::Connection.new(host, port, :pool_size => 5)
+        @database = @connection[database]
         @collection = @database[collection]
     end
 
@@ -49,20 +49,6 @@ module DBHandler
         rescue Exception => e
 
         end
-    end
-    
-    #
-    # Number of documents within Collection.
-    #
-    def count
-        @collection.count
-    end
-    
-    #
-    # Close Database Connection
-    #
-    def close
-        @conn.close()
     end
 
 end
