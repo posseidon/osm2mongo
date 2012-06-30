@@ -1,6 +1,7 @@
-=== 1.0.0 / 2012-06-26
+=== 0.0.1 / 2012-06-26
 
 * 1 major enhancement
-
   * Birthday!
+* 2 published gem
+
 

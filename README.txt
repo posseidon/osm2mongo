@@ -8,9 +8,7 @@ Import Openstreetmap .osm(xml) data format into MongoDB written in Ruby.
 
 == FEATURES/PROBLEMS:
 
-* TODO: Missing Shift class and modules under Osm2Mongo main module.
 * TODO: Missing command line App.
-* TODO: Finish making gem installable.
 * TODO: Missing Rake task for installing dependencies and generate documentation.
 
 == SYNOPSIS:

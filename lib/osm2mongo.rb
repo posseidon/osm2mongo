@@ -39,7 +39,7 @@
 
 
 require 'optparse' 
-require 'rdoc/usage'
+#require 'rdoc/usage'
 require 'ostruct'
 require 'date'
 
@@ -124,11 +124,11 @@ class App
     
     def output_help
       output_version
-      RDoc::usage() #exits app
+      #RDoc::usage() #exits app
     end
     
     def output_usage
-      RDoc::usage('usage') # gets usage from comments above
+      #RDoc::usage('usage') # gets usage from comments above
     end
     
     def output_version

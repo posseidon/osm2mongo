@@ -16,9 +16,9 @@ Hoe.spec 'osm2mongo' do
   # you'll never have to touch them again!
   # (delete this comment too, of course)
 
-  # developer('FIX', 'FIX@example.com')
+  developer('Binh Nguyen Thai', 'posseidon@gmail.com')
 
-  # self.rubyforge_name = 'osm2mongox' # if different than 'osm2mongo'
+  # self.rubyforge_name = 'osm2mongo' # if different than 'osm2mongo'
 end
 
 # vim: syntax=ruby
@@ -27,6 +27,7 @@ inst = Gem::DependencyInstaller.new
     begin
      inst.install "progressbar"
      inst.install "nokogiri"
+     inst.install "mongo"
     rescue
      exit(1)
     end

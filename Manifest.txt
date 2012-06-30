@@ -4,5 +4,14 @@ Manifest.txt
 README.txt
 Rakefile
 bin/osm2mongo
+lib/callbacks.rb
+lib/common.rb
+lib/db/abstract_interface.rb
+lib/db/dbhandler.rb
+lib/db/mongohandler.rb
 lib/osm2mongo.rb
+test/profile.rb
+test/test_callbacks.rb
+test/test_mongo.rb
 test/test_osm2mongo.rb
+test/test_preprocessor.rb
