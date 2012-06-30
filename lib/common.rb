@@ -19,7 +19,7 @@ require 'Callbacks'
 # - Decompressor method: unpack gzip2 osm file.
 # - 
 #
-module Preprocessor
+module Common
     
     UNITS = %W(B KiB MiB GiB TiB).freeze
     READ = "r"
@@ -32,9 +32,9 @@ module Preprocessor
     # * +url+ Url address of file.
     # * +destination+ Where to download it.
     # ==== Examples
-    #     result = Preprocessor::download("http://someurl.com/somedata.txt","/tmp/")
+    #     result = Common::download("http://someurl.com/somedata.txt","/tmp/")
     #
-    def Preprocessor.download(url, destination)
+    def Common.download(url, destination)
         uri = URI.parse(url)
         http = Net::HTTP.new(uri.host)
         size = http.request_head(url)['content-length'].to_f
@@ -61,9 +61,9 @@ module Preprocessor
     # ==== Attributes
     # * +source+ Absolute path of archive file.
     # ==== Examples
-    #     result = Preprocessor::decompress("/tmp/hungary.osm.bz2")
+    #     result = Common::decompress("/tmp/hungary.osm.bz2")
     #
-    def Preprocessor.decompress(source)
+    def Common.decompress(source)
         command = Thread.new do
           system("bunzip2 #{source}") # long-long programm
         end
@@ -81,26 +81,22 @@ module Preprocessor
     # * +collection_name+ Collection name
     # * +batch_limit+ Limit of Array for batch insert (carefull, it may vary on architecture).
     # ==== Examples
-    #     result = Preprocessor::push2mongo("/tmp/map.osm", "osm",  collections, 1000)
+    #     result = Common::push2mongo("/tmp/map.osm", "osm",  collections, 1000)
     #
-    def Preprocessor.push2mongo(osm_file, db_name, collection_names, batch_limit, host = "localhost", port = "27017")
-        begin
-            result = nil
-            File.open(osm_file, READ) do |osm|
-                cb = Callbacks.new(db_name, collection_names, batch_limit)
-                reader = Nokogiri::XML::Reader(osm)
-                reader.read()
-                while reader.read()
-                    unless reader.value?
-                        cb.called(reader)
-                    end
+    def Common.push2mongo(osm_file, db_name, collection_names, batch_limit, host = "localhost", port = "27017")
+        result = nil
+        File.open(osm_file, READ) do |osm|
+            cb = Callbacks.new(db_name, collection_names, batch_limit)
+            reader = Nokogiri::XML::Reader(osm)
+            reader.read()
+            while reader.read()
+                unless reader.value?
+                    cb.called(reader)
                 end
-                result = cb.end()
             end
-            return result  
-        rescue Exception => e
-            puts e
+            result = cb.end()
         end
+        return result  
     end
     
 
@@ -109,9 +105,9 @@ module Preprocessor
     # ==== Attributes
     # * +size+ size in bytes
     # ==== Examples
-    #     result = Preprocessor::as_size("53344233")
+    #     result = Common::as_size("53344233")
     #
-    def Preprocessor.as_size number
+    def Common.as_size number
       if number.to_i < 1024
         exponent = 0
 

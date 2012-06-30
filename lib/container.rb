@@ -60,7 +60,7 @@ class Container
         # Clear Hash Array
         @array.clear
         # Close Database connection.
-        close()
+        @connection.close()
     end        
 end
 
