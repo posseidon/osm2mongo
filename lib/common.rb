@@ -2,8 +2,8 @@ require 'uri'
 require 'net/http'
 require 'progressbar'
 require 'nokogiri'
+require 'observer'
 
-require 'Callbacks'
 
 # Responsible for Http actions.
 # 
@@ -19,11 +19,14 @@ require 'Callbacks'
 # - Decompressor method: unpack gzip2 osm file.
 # - 
 #
-module Common
+class Common
+    include Observable
     
     UNITS = %W(B KiB MiB GiB TiB).freeze
     READ = "r"
     ENDL = "\n"
+    INFO = Struct.new(:name)
+    DONE = "done"
     
     
     #
@@ -34,7 +37,7 @@ module Common
     # ==== Examples
     #     result = Common::download("http://someurl.com/somedata.txt","/tmp/")
     #
-    def Common.download(url, destination)
+    def download(url, destination)
         uri = URI.parse(url)
         http = Net::HTTP.new(uri.host)
         size = http.request_head(url)['content-length'].to_f
@@ -63,7 +66,7 @@ module Common
     # ==== Examples
     #     result = Common::decompress("/tmp/hungary.osm.bz2")
     #
-    def Common.decompress(source)
+    def decompress(source)
         command = Thread.new do
           system("bunzip2 #{source}") # long-long programm
         end
@@ -83,20 +86,19 @@ module Common
     # ==== Examples
     #     result = Common::push2mongo("/tmp/map.osm", "osm",  collections, 1000)
     #
-    def Common.push2mongo(osm_file, db_name, collection_names, batch_limit, host = "localhost", port = "27017")
-        result = nil
+    def parse(osm_file)
         File.open(osm_file, READ) do |osm|
-            cb = Callbacks.new(db_name, collection_names, batch_limit)
             reader = Nokogiri::XML::Reader(osm)
             reader.read()
             while reader.read()
                 unless reader.value?
-                    cb.called(reader)
+                    changed()
+                    notify_observers(reader)
                 end
             end
-            result = cb.end()
+            changed()
+            notify_observers(INFO.new(DONE))
         end
-        return result  
     end
     
 
@@ -107,7 +109,7 @@ module Common
     # ==== Examples
     #     result = Common::as_size("53344233")
     #
-    def Common.as_size number
+    def as_size number
       if number.to_i < 1024
         exponent = 0
 

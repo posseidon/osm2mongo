@@ -1,4 +1,4 @@
-require 'Container'
+require_relative 'db/mongohandler'
 
 # Container: Responsible for inserting data.
 # 
@@ -20,6 +20,7 @@ class Callbacks
     NDS = "nodes"
     TGS = "tags"
     MBS = "members"
+    DONE = "done"
     
     KEY = "k"
     VALUE = "v"
@@ -29,13 +30,23 @@ class Callbacks
     LAT = "lat"
     REF = "ref"
     
-    def initialize(database, collections, qlimit)
-        @nodes = Container.new(database, collections[NODE], qlimit)
-        @ways = Container.new(database, collections[WAY], qlimit)
-        @relations = Container.new(database, collections[RELATION], qlimit)
+    attr_accessor :parsed
+    
+    def initialize(database, collections, qlimit, parser)
+        @nodes = DB::Mongohandler.new(database, collections[NODE], qlimit)
+        @nodes.connect()
+        
+        @ways = DB::Mongohandler.new(database, collections[WAY], qlimit)
+        @ways.connect()
+        
+        @relations = DB::Mongohandler.new(database, collections[RELATION], qlimit)
+        @relations.connect()
+        
+        parser.add_observer(self)
+        @parsed = false
     end
     
-    def called(reader)
+    def update(reader)
         case reader.name
             when NODE
                 node(reader)
@@ -43,16 +54,18 @@ class Callbacks
                 way(reader)
             when RELATION
                 relation(reader)
+            when DONE
+                flush_all()
             else
                 # Skip
         end
     end
     
-    def end
+    def flush_all
         @nodes.flush()
         @ways.flush()
         @relations.flush()
-        return {NODE => @nodes.collection.count, WAY => @ways.collection.count, RELATION => @relations.collection.count}
+        @parsed = true
     end
 
     def node(reader)

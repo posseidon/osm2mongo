@@ -5,7 +5,7 @@ require 'preprocessor.rb'
 # Profile the code
 RubyProf.start
 
-status = Common.push2mongo"/tmp/map.osm")
+status = Common.parse("/tmp/map.osm")
 
 result = RubyProf.stop
 

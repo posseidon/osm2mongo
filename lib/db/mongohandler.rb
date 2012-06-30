@@ -85,7 +85,7 @@ module DB
         #    
         def flush
             # Push remaining data to database
-            bulk_insert(@array)
+            bulk_insert(@data_array)
             # Clear Hash Array
             @data_array.clear
             # Close Database connection.
