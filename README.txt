@@ -26,6 +26,7 @@ Import Openstreetmap .osm(xml) data format into MongoDB written in Ruby.
   =============
   
   ruby osm2mongo.rb -H localhost -p 27017 -d osm -l 200 -f /tmp/map.osm
+  ruby osm2mongo.rb -H localhost -p 27017 -d osm -l 200 -U http://people.inf.elte.hu/ntb/map.osm.bz2
 
 
 == REQUIREMENTS:
