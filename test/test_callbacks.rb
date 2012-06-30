@@ -14,11 +14,11 @@ class TestCallbacks
 end
 
 
-describe Callbacks, "#test Observer" do
+describe Osm2Mongo::Callbacks, "#test Observer" do
     it "should open and process content of osm file" do
         test = TestCallbacks.new
         collections = {"node" => "nodes", "way" => "ways", "relation" => "rels"}
-        callback = Callbacks.new("osm",  collections, 1000, test)
+        callback = Osm2Mongo::Callbacks.new("osm",  collections, 1000, test)
         test.publish()
         (callback.parsed).should be(true)
     end

@@ -21,7 +21,16 @@ module DB
             @collname = collection_name
             @bulk_limit = bulk_limit
             @data_array = Array.new
-            @collections = Hash.new
+        end
+        
+        #
+        # Use Existing Connection
+        # ==== Attributes
+        # * +connection+ Existing connection
+        #
+        def use_connection(connection)
+            @connection = connection
+            @collection = (@connection[@dbname])[@collname]
         end
 
         #
