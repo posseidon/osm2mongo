@@ -8,22 +8,35 @@ Import Openstreetmap .osm(xml) data format into MongoDB written in Ruby.
 
 == FEATURES/PROBLEMS:
 
-* TODO: Missing command line App.
 * TODO: Missing Rake task for installing dependencies and generate documentation.
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  From Code:
+  =============
+  
+  collections = {"node" => "nodes", "way" => "ways", "relation" => "rels"}
+  common = Osm2Mongo::Common.new()
+  status = common.download("http://download.geofabrik.de/osm/europe/hungary.osm.bz2", "/tmp/")
+  status = common.decompress(status['path'])
+  callback = Osm2Mongo::Callbacks.new("osm",  collections, 100, common)
+  common.parse(status['path'])
+  
+  From command line:
+  =============
+  
+  ruby osm2mongo.rb -H localhost -p 27017 -d osm -l 200 -f /tmp/map.osm
+
 
 == REQUIREMENTS:
 
-* mongo: ruby driver (http://rubygems.org/gems/mongo)
+* mongo: MongoDB ruby driver (http://rubygems.org/gems/mongo)
 * nokogiri: xml parser (http://rubygems.org/gems/nokogiri)
 * progressbar: just for fun and icandy :-) (http://rubygems.org/gems/progressbar)
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+sudo gem install osm2mongo
 
 == DEVELOPERS:
 

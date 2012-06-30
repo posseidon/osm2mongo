@@ -18,34 +18,33 @@
 #   For help use: ruby_cl_skeleton -h
 #
 # == Options
-#   -h, --help          Displays help message
-#   -v, --version       Display the version, then exit
-#   -q, --quiet         Output as little as possible, overrides verbose
-#   -V, --verbose       Verbose output
-#   TO DO - add additional options
+#   -h, --help          Displays help message.
+#   -v, --version       Display the version, then exit.
+#   -f, --file          Absolute path of OSM file.
+#   -H, --host          Host of MongoDB.
+#   -p, --port          Port number of MongoDB.
+#   -d, --database      Name of Database to store data.
+#   -U, --url           Url Location of .osm.bz file.
+#   -l, --limit         Array limit for bulk insert.
 #
 # == Author
-#   YourName
+#   Binh Nguyen Thai
 #
 # == Copyright
-#   Copyright (c) 2007 YourName. Licensed under the MIT License:
+#   Copyright (c) 2012 Binh Nguyen Thai. Licensed under the MIT License:
 #   http://www.opensource.org/licenses/mit-license.php
 
 
-# TO DO - replace all ruby_cl_skeleton with your app name
-# TO DO - replace all YourName with your actual name
-# TO DO - update Synopsis, Examples, etc
-# TO DO - change license if necessary
-
-
 require 'optparse' 
-#require 'rdoc/usage'
 require 'ostruct'
 require 'date'
 
+require_relative 'common'
+require_relative 'callbacks'
+
 
 class App
-  VERSION = '0.0.1'
+  VERSION = '0.0.2'
   
   attr_reader :options
 
@@ -55,9 +54,8 @@ class App
     
     # Set defaults
     @options = OpenStruct.new
-    @options.verbose = false
-    @options.quiet = false
     # TO DO - add additional defaults
+    @todos = Hash.new
   end
 
   # Parse options, check arguments, then process the command
@@ -65,14 +63,25 @@ class App
         
     if parsed_options? && arguments_valid? 
       
-      puts "Start at #{DateTime.now}\n\n" if @options.verbose
-      
       output_options if @options.verbose # [Optional]
             
-      process_arguments            
-      process_command
+      process_arguments
       
-      puts "\nFinished at #{DateTime.now}" if @options.verbose
+      collections = {"node" => "nodes", "way" => "ways", "relation" => "rels"}
+      common = Osm2Mongo::Common.new()
+      callback = Osm2Mongo::Callbacks.new(@todos['db'], collections, Integer(@todos['limit']), common, @todos['host'], @todos['port'])
+      file_path = ''
+      beginning_time = Time.now
+      unless @todos.has_key?("file")
+          status = common.download("http://download.geofabrik.de/osm/europe/hungary.osm.bz2", "/tmp/")
+          status = common.decompress(status['path'])
+          file_path = status['path']
+      else
+          file_path = @todos['file']
+      end
+      common.parse(file_path)
+      end_time = Time.now
+      puts "\nNodes:(#{callback.nodes.collection.count})  Ways:(#{callback.ways.collection.count})  Rels:(#{callback.relations.collection.count}) >>> Elapsed: #{(end_time - beginning_time)}"
       
     else
       output_usage
@@ -88,72 +97,43 @@ class App
       opts = OptionParser.new 
       opts.on('-v', '--version')    { output_version ; exit 0 }
       opts.on('-h', '--help')       { output_help }
-      opts.on('-V', '--verbose')    { @options.verbose = true }  
-      opts.on('-q', '--quiet')      { @options.quiet = true }
-      # TO DO - add additional options
-            
+      
+      opts.on('-f', '--file')       { @options.file = true }
+      opts.on('-U', '--Url')        { @options.url = true}
+      opts.on('-H', '--host')       { @options.host = true}
+      opts.on('-p', '--port')       { @options.port = true}
+      opts.on('-d', '--database')   { @options.db = true}
+      opts.on('-l', '--limit')      { @options.limit = true}
+      
       opts.parse!(@arguments) rescue return false
       
-      process_options
       true      
     end
-
-    # Performs post-parse processing on options
-    def process_options
-      @options.verbose = false if @options.quiet
-    end
     
-    def output_options
-      puts "Options:\n"
-      
-      @options.marshal_dump.each do |name, val|        
-        puts "  #{name} = #{val}"
-      end
-    end
 
     # True if required arguments were provided
     def arguments_valid?
-      # TO DO - implement your real logic here
-      true if @arguments.length == 1 
+      true if @arguments.length == 5
     end
     
     # Setup the arguments
     def process_arguments
-      # TO DO - place in local vars, etc
-    end
-    
-    def output_help
-      output_version
-      #RDoc::usage() #exits app
-    end
-    
-    def output_usage
-      #RDoc::usage('usage') # gets usage from comments above
+
+      @options.marshal_dump.each do |name, val|
+        @todos[name.to_s] = ''
+      end
+      
+      @todos.each_with_index do |(key,value), idx|
+        @todos[key] = @arguments[idx]
+      end
+
     end
     
     def output_version
-      puts "#{File.basename(__FILE__)} version #{VERSION}"
+      puts "Osm2Mongo Utility version #{VERSION}"
     end
     
-    def process_command
-      # TO DO - do whatever this app does
-      
-      #process_standard_input # [Optional]
-    end
-
-    def process_standard_input
-      input = @stdin.read      
-      # TO DO - process input
-      
-      # [Optional]
-      #@stdin.each do |line| 
-      #  # TO DO - process each line
-      #end
-    end
 end
-
-
-# TO DO - Add your Modules, Classes, etc
 
 
 # Create and run the application

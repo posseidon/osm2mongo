@@ -32,15 +32,16 @@ module Osm2Mongo
         REF = "ref"
     
         attr_accessor :parsed
+        attr_accessor :nodes, :ways, :relations
     
-        def initialize(database, collections, qlimit, parser)
-            @nodes = DB::Mongohandler.new(database, collections[NODE], qlimit)
+        def initialize(database, collections, qlimit, parser, host, port)
+            @nodes = DB::Mongohandler.new(database, collections[NODE], qlimit, host, port)
             @nodes.connect()
         
-            @ways = DB::Mongohandler.new(database, collections[WAY], qlimit)
+            @ways = DB::Mongohandler.new(database, collections[WAY], qlimit, host, port)
             @ways.use_connection(@nodes.connection)
         
-            @relations = DB::Mongohandler.new(database, collections[RELATION], qlimit)
+            @relations = DB::Mongohandler.new(database, collections[RELATION], qlimit, host, port)
             @relations.use_connection(@nodes.connection)
         
             parser.add_observer(self)

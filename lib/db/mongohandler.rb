@@ -14,7 +14,7 @@ module DB
         # * +bulk_limit+ Array limit for bulk insert.
         # * +host+ host name (default: localhost)
         # * +port+ port number (default: 27017)    
-        def initialize(database_name, collection_name, bulk_limit, host = "localhost", port = "27017")
+        def initialize(database_name, collection_name, bulk_limit, host, port)
             @host = host
             @port = port
             @dbname = database_name

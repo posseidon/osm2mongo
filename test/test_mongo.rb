@@ -4,7 +4,7 @@ require 'mongohandler.rb'
 
 describe DB::Mongohandler, "#connect" do
     it "should returns connection status active" do
-        mongo = DB::Mongohandler.new("local", "test", 100)
+        mongo = DB::Mongohandler.new("local", "test", 100, 'localhost', '27017')
         mongo.connect()
         (mongo.connection.connected?).should be(true)
     end
@@ -12,7 +12,7 @@ end
 
 describe DB::Mongohandler do
     before do
-        @handler = DB::Mongohandler.new("local", "test", 100)
+        @handler = DB::Mongohandler.new("local", "test", 100, 'localhost', '27017')
         @handler.connect()
     end
     
