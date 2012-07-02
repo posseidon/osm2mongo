@@ -1,7 +1,8 @@
 === 0.0.1 / 2012-06-26
 
 * 1 major enhancement
-  * Birthday!
 * 2 published gem
+* 3 added command line app
+* 4 added filter osm map features
 
 

@@ -1,4 +1,8 @@
 .autotest
+.yardoc/checksums
+.yardoc/object_types
+.yardoc/objects/root.dat
+.yardoc/proxy_types
 History.txt
 Manifest.txt
 README.txt
@@ -10,6 +14,7 @@ lib/db/abstract_interface.rb
 lib/db/dbhandler.rb
 lib/db/mongohandler.rb
 lib/osm2mongo.rb
+osm2mongo.gemspec
 test/profile.rb
 test/test_callbacks.rb
 test/test_mongo.rb

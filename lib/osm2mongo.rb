@@ -41,6 +41,7 @@ require 'date'
 
 require_relative 'common'
 require_relative 'callbacks'
+require_relative 'db/classifier'
 
 
 class App
@@ -72,8 +73,23 @@ class App
       callback = Osm2Mongo::Callbacks.new(@todos['db'], collections, Integer(@todos['limit']), common, @todos['host'], @todos['port'])
       file_path = ''
       beginning_time = Time.now
+      
+      if @todos.has_key?("feature") or @todos.has_key?("subfeature")
+          filter = DB::Classifier.new(@todos['db'], @todos['limit'], @todos['host'], @todos['port'])
+          result = 0
+
+          if @todos.has_key?("subfeature")
+              result = filter.classify_subtype(@todos['feature'], @todos['subfeature'])
+          else
+              result = filter.classify_all(@todos['feature'])
+          end
+          end_time = Time.now
+          puts "\n Processed Objects :(#{result}) >>> Elapsed: #{(end_time - beginning_time)}"
+          return 0
+      end
+      
       unless @todos.has_key?("file")
-          status = common.download("http://download.geofabrik.de/osm/europe/hungary.osm.bz2", "/tmp/")
+          status = common.download(@todos['url'], "/tmp/")
           status = common.decompress(status['path'])
           file_path = status['path']
       else
@@ -105,15 +121,18 @@ class App
       opts.on('-d', '--database')   { @options.db = true}
       opts.on('-l', '--limit')      { @options.limit = true}
       
-      opts.parse!(@arguments) rescue return false
+      opts.on('-F', '--feature')    { @options.feature = true}
+      opts.on('-S', '--sfeature')   { @options.subfeature = true}
       
+      opts.parse!(@arguments) rescue return false
+
       true      
     end
     
 
     # True if required arguments were provided
     def arguments_valid?
-      true if @arguments.length == 5
+      true if @arguments.length >= 5
     end
     
     # Setup the arguments
@@ -127,6 +146,10 @@ class App
         @todos[key] = @arguments[idx]
       end
 
+    end
+    
+    def output_usage
+        puts "Error parsing arguments"
     end
     
     def output_version
